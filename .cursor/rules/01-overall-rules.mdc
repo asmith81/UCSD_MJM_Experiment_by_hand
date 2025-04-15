@@ -1,0 +1,87 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Rules: LMM Invoice Data Extraction Comparison (Rapid Implementation Version)
+
+## Revised Architectural Principles for Rapid Implementation
+
+### 1. Functional Programming Approach
+- Use stateless functions that transform data rather than complex classes
+- Minimize state management to reduce complexity
+- Use simple data structures (dictionaries, lists) for data exchange
+- Focus on pipeline-oriented processing for clarity
+- Clear input/output contracts for each function
+
+### 2. Code Constraints (Simplified)
+- Favor readability over complex abstractions
+- Maximum 100 characters per line
+- Keep functions small and focused (ideally < 25 lines)
+- Maximum 3 levels of nesting in any function
+- Prioritize simplicity over extensibility for this phase
+
+### 3. Simplified Structure
+- Organize code by function rather than complex inheritance hierarchies
+- Use utility modules with logical grouping of related functions
+- Create thin notebooks that import functionality from utility modules
+- Keep core logic in utility modules, not notebooks
+- Minimize interdependencies between components
+
+### 4. Configuration Management
+- Use simple configuration files (YAML or JSON)
+- Move environment setup, dependencies, and paths to source modules
+- Store prompt templates in separate files for reference
+- Keep model-specific loading and inference functions in source code
+- Allow notebooks to be thin execution environments
+
+### 6. Error Handling (Simplified)
+- Focus on core error handling for critical operations
+- Use try/except blocks with meaningful error messages
+- Log errors immediately when they occur
+- Design for graceful crash recovery with result tracking
+- Skip complex error hierarchies in favor of basic error types
+
+### 7. Documentation
+- Document all functions with clear docstrings
+- Include parameters and return values in docstrings
+- Add inline comments for complex operations
+- Use markdown cells in notebooks to explain process
+- Maintain clear README files in key directories
+
+## File Organization
+
+### Source Files
+- Create a `src/` directory with utility modules
+- Group functions by purpose (environment, data, models, evaluation)
+- Keep related functionality in the same module
+- Use clear, descriptive file and function names
+
+### Notebook Organization
+- Create one notebook template with a customizable test
+- Import utility functions at the top of each notebook
+- Clearly document notebook purpose and parameters
+- Use markdown cells to explain each execution step
+- Minimize code duplication across notebooks
+
+## Naming Conventions
+
+### Function Names
+- Use descriptive snake_case for all function names
+- Make function purpose clear from name
+- Use verb phrases for action functions
+- Use noun phrases for data access functions
+
+### Variable Names
+- Use descriptive snake_case for all variables
+- Name variables according to their content/purpose
+- Use consistent naming patterns across modules
+- Prefer explicit names over abbreviations
+
+### File Names
+- Use descriptive snake_case for all file names
+- Group related functionality in single modules
+- Use consistent naming patterns for similar files
+
+
+
