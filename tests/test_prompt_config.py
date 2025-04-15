@@ -77,4 +77,18 @@ class TestPromptConfigurationManager(unittest.TestCase):
         """Test getting configuration returns correct structure."""
         config = self.config_manager.get_config()
         
-        # Verify t
+        # Verify type
+        self.assertIsInstance(config, dict)
+        
+        # Verify structure
+        self.assertIn('field', config)
+        self.assertIn('prompt', config)
+        self.assertIn('quantization', config)
+        
+        # Verify values match widget values
+        self.assertEqual(config['field'], self.config_manager.field_dropdown.value)
+        self.assertEqual(config['prompt'], self.config_manager.prompt_dropdown.value)
+        self.assertEqual(config['quantization'], self.config_manager.quantization_dropdown.value)
+
+if __name__ == '__main__':
+    unittest.main() 
