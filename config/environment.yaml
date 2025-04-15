@@ -1,0 +1,35 @@
+paths:
+  # Base directories
+  project_root: "${PROJECT_ROOT}"
+  user_home: "${USER_HOME}"
+  
+  # Core project directories
+  src: "${project_root}/src"
+  config: "${project_root}/config"
+  tests: "${project_root}/tests"
+  
+  # Data directories
+  data:
+    input: "${project_root}/data/input"
+    output: "${project_root}/data/output"
+    processed: "${project_root}/data/processed"
+  
+  # Model directories
+  models:
+    base: "${project_root}/models"
+    pixtral: "${models.base}/pixtral-12b"
+    cache: "${models.base}/cache"
+  
+  # System directories
+  logs: "${project_root}/logs"
+  temp: "${TEMP_DIR}/project"
+  cache: "${project_root}/cache"
+
+  # Environment-specific overrides
+  development:
+    temp: "${project_root}/temp"
+    cache: "${project_root}/.cache"
+  
+  production:
+    temp: "/var/tmp/project"
+    cache: "/var/cache/project" 
