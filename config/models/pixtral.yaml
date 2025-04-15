@@ -10,9 +10,11 @@ processor_type: "AutoProcessor"
 # Hardware requirements
 hardware:
   gpu_required: true
-  gpu_memory_min: "24GB"
+  gpu_memory_min: 24  # GB as integer
   recommended_gpu: "A4000 or better"
-  minimum_compute_capability: "7.5"
+  minimum_compute_capability: 7.5  # Float value
+  disk_space_required: 50  # GB as integer
+  ram_required: 32  # GB as integer
 
 # Loading configuration
 loading:
@@ -23,6 +25,10 @@ loading:
     use_auth_token: false
     use_flash_attention_2: false
     attn_implementation: "eager"
+  validation:
+    max_batch_size: 1
+    timeout_seconds: 300
+    retry_attempts: 3
 
 # Quantization options
 quantization:
@@ -33,6 +39,7 @@ quantization:
       device_map: "cuda:0"
       use_flash_attention_2: false
       attn_implementation: "eager"
+      memory_usage: 24  # GB as integer
     
     int8:
       load_in_8bit: true
@@ -40,6 +47,7 @@ quantization:
       use_flash_attention_2: false
       attn_implementation: "eager"
       bnb_8bit_quant_type: "fp8"
+      memory_usage: 12  # GB as integer
     
     int4:
       load_in_4bit: true
@@ -48,6 +56,7 @@ quantization:
       device_map: "auto"
       use_flash_attention_2: false
       attn_implementation: "eager"
+      memory_usage: 6  # GB as integer
 
 # Prompt configuration
 prompt:
@@ -61,19 +70,28 @@ prompt:
   image_placeholder: "[IMG]"
   default_field: "work_order"
   input_format: 
-    - image: "RGB"
-    - max_resolution: "4032x3024"
-    - max_file_size_mb: 10
+    image: "RGB"
+    max_resolution: "4032x3024"
+    max_file_size_mb: 10
+  validation:
+    required_fields: ["work_order", "total_cost"]
+    field_types:
+      work_order: "string"
+      total_cost: "float"
+    min_confidence: 0.7
 
 # Inference parameters
 inference:
-  max_new_tokens: 500
-  do_sample: false
-  temperature: 1.0
-  top_k: 50
-  top_p: 0.95
-  batch_size: 1
-  max_batch_memory_gb: 20
+  max_new_tokens: 512
+  temperature: 0.1
+  top_p: 0.9
+  repetition_penalty: 1.1
+  do_sample: true
+  validation:
+    timeout_seconds: 30
+    max_retries: 3
+    min_confidence: 0.7
+    required_fields: ["work_order", "total_cost"]
 
 # Performance monitoring
 performance:
@@ -83,8 +101,19 @@ performance:
 
 # Error handling
 error_handling:
-  retry_attempts: 2
-  fallback_strategy: "minimal_params"
+  retry_strategy:
+    max_attempts: 3
+    backoff_factor: 2
+    initial_delay: 1
+  fallback_strategy:
+    use_simpler_model: true
+    use_cached_results: true
+    timeout_action: "return_partial"
+  logging:
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    max_file_size_mb: 10
+    backup_count: 5
   critical_error_fields:
     - device_map
     - torch_dtype
